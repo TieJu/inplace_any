@@ -98,7 +98,12 @@ public:
     }
 
     bool empty() const { return _handler == nullptr; }
-    const std::type_info& type() const { if ( _handler ) { return _handler(nullptr,nullptr,handler_mode::get_type); } return &typeid(void); }
+    const std::type_info& type() const {
+        if ( _handler ) {
+            return *_handler(nullptr,nullptr,handler_mode::get_type);
+        } 
+        return typeid(void);
+    }
 
     template<typename Type>
     inplace_any& operator=(Type v_) {
