@@ -41,7 +41,7 @@ class inplace_any {
     };
 
     typedef typename std::aligned_storage<space,aligment>::type storage_type;
-    typedef void (*handler_type)(void*,void*,handler_mode);
+    typedef const std::type_info* (*handler_type)(void*,void*,handler_mode);
 
     storage_type            _store;
     handler_type            _handler;
