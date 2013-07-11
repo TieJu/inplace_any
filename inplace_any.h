@@ -25,9 +25,6 @@
  */
  #pragma once
 
-#include "config.h"
-
-
 #include <typeindex>
 #include <type_traits>
 #include <stdexcept>
