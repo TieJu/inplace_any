@@ -113,14 +113,18 @@ public:
     inplace_any& operator=(const inplace_any& o_) {
         destruct();
         _handler    = o_._handler;
-        _handler(&const_cast<inplace_any&>(o_)._store,&_store,handler_mode::copy);
+        if ( _handler ) {
+            _handler(&const_cast<inplace_any&>(o_)._store,&_store,handler_mode::copy);
+        }
         return *this;
     }
 
     inplace_any& operator=(inplace_any&& o_) {
         destruct();
         _handler    = o_._handler;
-        _handler(&o_._store,&_store,handler_mode::move);
+        if ( _handler ) {
+            _handler(&o_._store,&_store,handler_mode::move);
+        }
         return *this;
     }
 
