@@ -73,7 +73,7 @@ class inplace_any {
 
     template<typename Type>
     bool is_matching_type() const {
-        return *_handler(nullptr,nullptr,handler_mode::get_type) == typeid(Type);
+        return ( _handler != nullptr ) && ( *_handler(nullptr,nullptr,handler_mode::get_type) == typeid(Type) );
     }
 
     template<typename Type>
