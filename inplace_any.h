@@ -162,21 +162,21 @@ inline void swap(inplace_any<space,aligment>& lhr,inplace_any<space,aligment>& r
 
 template<typename Type,size_t space,size_t aligment>
 inline Type any_cast(inplace_any<space,aligment>& operand) {
-    return operand.cast();
+    return operand.cast<Type>( );
 }
 
 template<typename Type,size_t space,size_t aligment>
 inline Type any_cast(const inplace_any<space,aligment>& operand) {
-    return operand.cast();
+    return operand.cast<Type>( );
 }
 
 template<typename Type,size_t space,size_t aligment>
 inline Type* any_cast(inplace_any<space,aligment>* operand) {
-    return operand->cast_ptr();
+    return operand->cast_ptr<Type>( );
 }
 
 template<typename Type,size_t space,size_t aligment>
 inline const Type* any_cast(const inplace_any<space,aligment>* operand) {
-    return operand->cast_ptr();
+    return operand->cast_ptr<Type>();
 }
 };
