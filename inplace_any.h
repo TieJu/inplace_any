@@ -47,16 +47,18 @@ class inplace_any {
     handler_type            _handler;
 
     template<typename Type>
-    static const std::type_info* type_handler(void* a,void* b,handler_mode mode) {
+    static const std::type_info* type_handler(void* src,void* dst,handler_mode mode) {
+        auto src_typed = reinterpret_cast<Type*>( src );
+        auto dst_typed = reinterpret_cast<Type*>( dst );
         switch ( mode ) {
         case handler_mode::destruct:
-            reinterpret_cast<Type*>(a)->~Type();
+            dst_typed->~Type();
             break;
         case handler_mode::copy:
-            new (b) Type((*reinterpret_cast<const Type*>(a)));
+            new (dst) Type(( *src_typed ));
             break;
         case handler_mode::move:
-            new (b) Type(std::move((*reinterpret_cast<Type*>(a))));
+            new (dst) Type(std::move(( *src_typed )));
             break;
         case handler_mode::get_type:
             break;
@@ -66,7 +68,7 @@ class inplace_any {
 
     void destruct() {
         if ( !empty() ) {
-            _handler(&_store,nullptr,handler_mode::destruct);
+            _handler(&_store, &_store, handler_mode::destruct);
             _handler = nullptr;
         }
     }
@@ -82,7 +84,7 @@ class inplace_any {
         static_assert(sizeof(target_store_type) <= sizeof(storage_type),"inplace space is too smal to hold Type");
         destruct();
         _handler = &type_handler<Type>;
-        type_handler<Type>(&_store,&v_,handler_mode::move);
+        type_handler<Type>( &v_, &_store, handler_mode::move );
     }
 public:
     inplace_any() : _handler(nullptr) {}
